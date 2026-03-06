@@ -3,15 +3,24 @@ services:
     image: lscr.io/linuxserver/webtop:ubuntu-xfce
     container_name: dev-desktop
     environment:
-      - PUID=1000          # Change to your host user's UID (id -u)
-      - PGID=1000          # Change to your host user's GID (id -g)
-      - TZ=America/Toronto # Your timezone
+      - PUID=1000                    # Change to your host user's UID (id -u)
+      - PGID=1000                    # Change to your host user's GID (id -g)
+      - TZ=America/Toronto           # Your timezone
+      - NVIDIA_VISIBLE_DEVICES=all   # Expose all GPUs to the container runtime
+      - NVIDIA_DRIVER_CAPABILITIES=all # Enable all GPU capabilities (compute, graphics, etc.)
     volumes:
-      - ./config:/config             # Persistent desktop settings
-      - ./projects:/config/projects  # Mount your code here (optional but recommended)
+      - ./config:/config                                            # Persistent desktop settings
+      - ./projects:/config/projects                                 # Mount your code here
+      - ./config/custom-cont-init.d:/custom-cont-init.d            # Custom startup scripts
+    devices:
+      - /dev/dri:/dev/dri            # GPU-accelerated rendering (DRM)
+      - /dev/net/tun:/dev/net/tun    # Required for Tailscale VPN tunnel
+    cap_add:
+      - NET_ADMIN                    # Required for Tailscale to manage network interfaces
     ports:
-      - "3001:3000"                  # Browser access (secure over Tailscale)
+      - "3001:3000"                  # Browser desktop access → http://localhost:3001
       - "2222:22"                    # SSH access
+    shm_size: "1gb"                  # Shared memory — prevents black screen with GPU + Selkies
     deploy:
       resources:
         reservations:

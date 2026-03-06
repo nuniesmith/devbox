@@ -18,7 +18,8 @@ services:
     cap_add:
       - NET_ADMIN                    # Required for Tailscale to manage network interfaces
     ports:
-      - "3001:3000"                  # Browser desktop access → http://localhost:3001
+      - "3001:3001"                  # Browser desktop access (HTTP) → http://localhost:3001
+      - "3002:3002"                  # Browser desktop access (HTTPS) → https://localhost:3002
       - "2222:22"                    # SSH access
     shm_size: "1gb"                  # Shared memory — prevents black screen with GPU + Selkies
     deploy:

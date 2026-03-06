@@ -1,27 +1,4 @@
-# SSL certificates and private keys
-config/ssl/
-
-# Desktop session / X11 / app cache — regenerated on each container start
-config/.ICEauthority
-config/.Xresources
-config/.cache/
-config/.dbus/
-config/.gnupg/
-
-# Container-generated config (non-essential GUI state)
-config/.config/
-config/.local/cache/
-config/.XDG/
-
-# Sync log (runtime output, not source)
-config/gh_sync.log
+config/
 
 # Projects are managed by git individually
 projects/
-
-# Common OS/editor noise
-.DS_Store
-Thumbs.db
-*~
-config/.dbus/session-bus/da397d111cd04a05807da43b131cf736-1
-config/.XDG/ICEauthority

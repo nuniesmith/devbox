@@ -1,0 +1,23 @@
+services:
+  dev-desktop:
+    image: lscr.io/linuxserver/webtop:ubuntu-xfce
+    container_name: dev-desktop
+    environment:
+      - PUID=1000          # Change to your host user's UID (id -u)
+      - PGID=1000          # Change to your host user's GID (id -g)
+      - TZ=America/Toronto # Your timezone
+    volumes:
+      - ./config:/config             # Persistent desktop settings
+      - ./projects:/config/projects  # Mount your code here (optional but recommended)
+    ports:
+      - "3001:3000"                  # Browser access (secure over Tailscale)
+      - "2222:22"                    # SSH access
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    restart: unless-stopped
+
